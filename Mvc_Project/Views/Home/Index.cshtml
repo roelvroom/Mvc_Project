@@ -2,7 +2,69 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded text-center">
+    <div class="row border">
+        <div class="col">
+            <h1>Album</h1>
+            <div class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded text-start">
+                <div class="row">
+                    <div class="col">
+                        <h2>Col 1</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h2>Col 2</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row border p-2">
+        <div class="col">
+            <h1>Aankoop aanvragen</h1>
+            <div class="container pt-3">
+                <a class="btn btn-primary btn-lg" href="#" role="button" onclick="window.location.href='@Url.Action("Create", "Aankoop")'">Aankoop aanvragen</a>
+            </div>
+        </div>
+        <div class="col">
+            <h1>Aangevraagde aankopen</h1>
+            <div class="container pt-3">
+                <ul class="list-group">
+                    <li class="list-group-item text-start">Aankoop 1
+                        <div class="float-end">
+                            <button type="button" class="btn btn-outline-success ">Accepteren</button>
+                            <button type="button" class="btn btn-outline-danger">Afwijzen</button>
+                            @*index moet veranderd worden door de id van de geselecteerde aankoop*@
+                            <button type="button" class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("Index", "Aankoop")'">
+                                Aanpassen
+                            </button>
+
+                        </div>
+                    </li>
+                    <li class="list-group-item text-start">Aankoop 2
+                        <div class="float-end">
+                            <button type="button" class="btn btn-outline-success ">Accepteren</button>
+                            <button type="button" class="btn btn-outline-danger">Afwijzen</button>
+                            @*index moet veranderd worden door de id van de geselecteerde aankoop*@
+                            <button type="button" class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("Index", "Aankoop")'">
+                                Aanpassen
+                            </button>
+                        </div>
+                    </li>
+                    <li class="list-group-item text-start">Aankoop 3
+                        <div class="float-end">
+                            <button type="button" class="btn btn-outline-success ">Accepteren</button>
+                            <button type="button" class="btn btn-outline-danger">Afwijzen</button>
+                            @*index moet veranderd worden door de id van de geselecteerde aankoop*@
+                            <button type="button" class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("Index", "Aankoop")'">
+                                Aanpassen
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+
