@@ -22,11 +22,9 @@ namespace Mvc_Project.Controllers
         // GET: Aankoop
         public async Task<IActionResult> Index()
         {
-            return View();
-
-            /*_context.Aankoop != null ?
+              return _context.Aankoop != null ? 
                           View(await _context.Aankoop.ToListAsync()) :
-                          Problem("Entity set 'Mvc_ProjectContext.Aankoop'  is null.");*/
+                          Problem("Entity set 'Mvc_ProjectContext.Aankoop'  is null.");
         }
 
         // GET: Aankoop/Details/5
