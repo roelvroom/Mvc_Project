@@ -22,20 +22,20 @@ namespace Mvc_Project.Controllers
         // GET: Vakken
         public async Task<IActionResult> Index()
         {
-              return _context.Vak != null ? 
-                          View(await _context.Vak.ToListAsync()) :
+              return _context.Vakken != null ? 
+                          View(await _context.Vakken.ToListAsync()) :
                           Problem("Entity set 'Mvc_ProjectContext.Vak'  is null.");
         }
 
         // GET: Vakken/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Vak == null)
+            if (id == null || _context.Vakken == null)
             {
                 return NotFound();
             }
 
-            var vak = await _context.Vak
+            var vak = await _context.Vakken
                 .FirstOrDefaultAsync(m => m.VakId == id);
             if (vak == null)
             {
@@ -70,12 +70,12 @@ namespace Mvc_Project.Controllers
         // GET: Vakken/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Vak == null)
+            if (id == null || _context.Vakken == null)
             {
                 return NotFound();
             }
 
-            var vak = await _context.Vak.FindAsync(id);
+            var vak = await _context.Vakken.FindAsync(id);
             if (vak == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace Mvc_Project.Controllers
         // GET: Vakken/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Vak == null)
+            if (id == null || _context.Vakken == null)
             {
                 return NotFound();
             }
 
-            var vak = await _context.Vak
+            var vak = await _context.Vakken
                 .FirstOrDefaultAsync(m => m.VakId == id);
             if (vak == null)
             {
@@ -141,14 +141,14 @@ namespace Mvc_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Vak == null)
+            if (_context.Vakken == null)
             {
                 return Problem("Entity set 'Mvc_ProjectContext.Vak'  is null.");
             }
-            var vak = await _context.Vak.FindAsync(id);
+            var vak = await _context.Vakken.FindAsync(id);
             if (vak != null)
             {
-                _context.Vak.Remove(vak);
+                _context.Vakken.Remove(vak);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace Mvc_Project.Controllers
 
         private bool VakExists(int id)
         {
-          return (_context.Vak?.Any(e => e.VakId == id)).GetValueOrDefault();
+          return (_context.Vakken?.Any(e => e.VakId == id)).GetValueOrDefault();
         }
     }
 }

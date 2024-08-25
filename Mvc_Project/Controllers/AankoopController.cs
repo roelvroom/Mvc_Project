@@ -13,29 +13,33 @@ namespace Mvc_Project.Controllers
     public class AankoopController : Controller
     {
         private readonly Mvc_ProjectContext _context;
+        private readonly ILogger<AankoopController> _logger;
 
-        public AankoopController(Mvc_ProjectContext context)
+
+        public AankoopController(Mvc_ProjectContext context, ILogger<AankoopController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Aankoop
         public async Task<IActionResult> Index()
         {
-              return _context.Aankoop != null ? 
-                          View(await _context.Aankoop.ToListAsync()) :
+            _logger.LogInformation("umoeder");
+              return _context.Aankopen != null ? 
+                          View(await _context.Aankopen.ToListAsync()) :
                           Problem("Entity set 'Mvc_ProjectContext.Aankoop'  is null.");
         }
 
         // GET: Aankoop/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Aankoop == null)
+            if (id == null || _context.Aankopen == null)
             {
                 return NotFound();
             }
 
-            var aankoop = await _context.Aankoop
+            var aankoop = await _context.Aankopen
                 .FirstOrDefaultAsync(m => m.AankoopId == id);
             if (aankoop == null)
             {
@@ -48,34 +52,53 @@ namespace Mvc_Project.Controllers
         // GET: Aankoop/Create
         public IActionResult Create()
         {
+            _logger.LogInformation("umoeder");
+            _logger.LogInformation($"{ViewBag.Gebruikers = new SelectList(_context.Gebruikers, "GebruikerId", "Naam")}");
+            ViewBag.Gebruikers = new SelectList(_context.Gebruikers, "GebruikerId", "Naam");
             return View();
         }
 
-        // POST: Aankoop/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AankoopId,VakId,NaamAanvragerId,Datum,Reden,GoedGekeurd,Verwijderd")] Aankoop aankoop)
+        public async Task<IActionResult> Create([Bind("AankoopId,VakId,Datum,Reden")] Aankoop aankoop)
         {
-            if (ModelState.IsValid)
+            // Haal de ingelogde gebruiker ID uit de sessie
+            var gebruikerIdString = HttpContext.Session.GetString("GebruikerId");
+
+            if (string.IsNullOrEmpty(gebruikerIdString))
             {
+                ModelState.AddModelError("", "Je moet ingelogd zijn om een aankoop te maken.");
+                ViewBag.Gebruikers = new SelectList(await _context.Gebruikers.ToListAsync(), "GebruikerId", "Naam");
+                return View(aankoop);
+            }
+
+            if (int.TryParse(gebruikerIdString, out int gebruikerId))
+            {
+                aankoop.NaamAanvragerId = gebruikerId;
+
                 _context.Add(aankoop);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            else
+            {
+                ModelState.AddModelError("", "Fout bij het ophalen van gebruikersinformatie.");
+            }
+
+            ViewBag.Gebruikers = new SelectList(await _context.Gebruikers.ToListAsync(), "GebruikerId", "Naam");
             return View(aankoop);
         }
+
 
         // GET: Aankoop/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Aankoop == null)
+            if (id == null || _context.Aankopen == null)
             {
                 return NotFound();
             }
 
-            var aankoop = await _context.Aankoop.FindAsync(id);
+            var aankoop = await _context.Aankopen.FindAsync(id);
             if (aankoop == null)
             {
                 return NotFound();
@@ -121,12 +144,12 @@ namespace Mvc_Project.Controllers
         // GET: Aankoop/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Aankoop == null)
+            if (id == null || _context.Aankopen == null)
             {
                 return NotFound();
             }
 
-            var aankoop = await _context.Aankoop
+            var aankoop = await _context.Aankopen
                 .FirstOrDefaultAsync(m => m.AankoopId == id);
             if (aankoop == null)
             {
@@ -141,14 +164,14 @@ namespace Mvc_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Aankoop == null)
+            if (_context.Aankopen == null)
             {
                 return Problem("Entity set 'Mvc_ProjectContext.Aankoop'  is null.");
             }
-            var aankoop = await _context.Aankoop.FindAsync(id);
+            var aankoop = await _context.Aankopen.FindAsync(id);
             if (aankoop != null)
             {
-                _context.Aankoop.Remove(aankoop);
+                _context.Aankopen.Remove(aankoop);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +180,7 @@ namespace Mvc_Project.Controllers
 
         private bool AankoopExists(int id)
         {
-          return (_context.Aankoop?.Any(e => e.AankoopId == id)).GetValueOrDefault();
+          return (_context.Aankopen?.Any(e => e.AankoopId == id)).GetValueOrDefault();
         }
     }
 }

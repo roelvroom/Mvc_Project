@@ -13,11 +13,8 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="NaamAanvragerId" class="control-label"></label>
-                <input asp-for="NaamAanvragerId" class="form-control" />
-                <span asp-validation-for="NaamAanvragerId" class="text-danger"></span>
-            </div>
+            <!-- Geen invoerveld voor NaamAanvragerId hier -->
+
             <div class="form-group">
                 <label asp-for="Datum" class="control-label"></label>
                 <input asp-for="Datum" class="form-control" />
@@ -33,19 +30,7 @@
                 <input asp-for="VakId" class="form-control" />
                 <span asp-validation-for="VakId" class="text-danger"></span>
             </div>
-            
-            
-            
-            @*<div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="GoedGekeurd" /> @Html.DisplayNameFor(model => model.GoedGekeurd)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Verwijderd" /> @Html.DisplayNameFor(model => model.Verwijderd)
-                </label>
-            </div>*@
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -58,5 +43,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

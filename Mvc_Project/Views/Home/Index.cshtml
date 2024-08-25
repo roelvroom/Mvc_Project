@@ -2,6 +2,7 @@
     ViewData["Title"] = "Home Page";
 }
 @inject IHttpContextAccessor HttpContextAccessor
+@model IEnumerable<Mvc_Project.Models.Aankoop>
 
 
 <div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded text-center">
@@ -36,12 +37,41 @@
         <div class="col">
             <h1>Aangevraagde aankopen</h1>
             <div class="container pt-3">
-                <ul class="list-group">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().NaamAanvrager.Voornaam)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().NaamAanvrager.Naam)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NaamAanvrager.Voornaam)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NaamAanvrager.Naam)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.AankoopId">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.AankoopId">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.AankoopId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @*<ul class="list-group">
                     <li class="list-group-item text-start">Aankoop 1
                         <div class="float-end">
                             <button type="button" class="btn btn-outline-success ">Accepteren</button>
                             <button type="button" class="btn btn-outline-danger">Afwijzen</button>
-                            @*index moet veranderd worden door de id van de geselecteerde aankoop*@
                             <button type="button" class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("Index", "Aankoop")'">
                                 Aanpassen
                             </button>
@@ -52,7 +82,6 @@
                         <div class="float-end">
                             <button type="button" class="btn btn-outline-success ">Accepteren</button>
                             <button type="button" class="btn btn-outline-danger">Afwijzen</button>
-                            @*index moet veranderd worden door de id van de geselecteerde aankoop*@
                             <button type="button" class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("Index", "Aankoop")'">
                                 Aanpassen
                             </button>
@@ -62,13 +91,12 @@
                         <div class="float-end">
                             <button type="button" class="btn btn-outline-success ">Accepteren</button>
                             <button type="button" class="btn btn-outline-danger">Afwijzen</button>
-                            @*index moet veranderd worden door de id van de geselecteerde aankoop*@
                             <button type="button" class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("Index", "Aankoop")'">
                                 Aanpassen
                             </button>
                         </div>
                     </li>
-                </ul>
+                </ul>*@
             </div>
         </div>
     </div>

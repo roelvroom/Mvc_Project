@@ -1,25 +1,21 @@
 ﻿@{
-    ViewData["HideNavBar"] = true;
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
-
-@if (ViewBag.FoutMelding != null)
-{
-    <div class="alert alert-danger">
-        @ViewBag.FoutMelding
-    </div>
-}
+<h1>Login</h1>
 
 <form asp-action="Index" method="post">
     <div class="form-group">
-        <label for="gebruikersnaam">Gebruikersnaam</label>
-        <input type="text" class="form-control" id="gebruikersnaam" name="gebruikersnaam" required />
+        <label for="gebruikersNaam">Gebruikersnaam</label>
+        <input type="text" name="gebruikersNaam" id="gebruikersNaam" class="form-control" />
+        <span class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label for="wachtwoord">Wachtwoord</label>
-        <input type="password" class="form-control" id="wachtwoord" name="wachtwoord" required />
+        <label for="wachtWoord">Wachtwoord</label>
+        <input type="password" name="wachtWoord" id="wachtWoord" class="form-control" />
+        <span class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Login</button>
+    <div class="form-group">
+        <input type="submit" value="Login" class="btn btn-primary" />
+    </div>
 </form>

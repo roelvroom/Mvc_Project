@@ -22,20 +22,20 @@ namespace Mvc_Project.Controllers
         // GET: Gebruiker
         public async Task<IActionResult> Index()
         {
-              return _context.Gebruiker != null ? 
-                          View(await _context.Gebruiker.ToListAsync()) :
+              return _context.Gebruikers != null ? 
+                          View(await _context.Gebruikers.ToListAsync()) :
                           Problem("Entity set 'Mvc_ProjectContext.Gebruiker'  is null.");
         }
 
         // GET: Gebruiker/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Gebruiker == null)
+            if (id == null || _context.Gebruikers == null)
             {
                 return NotFound();
             }
 
-            var gebruiker = await _context.Gebruiker
+            var gebruiker = await _context.Gebruikers
                 .FirstOrDefaultAsync(m => m.GebruikerId == id);
             if (gebruiker == null)
             {
@@ -60,7 +60,7 @@ namespace Mvc_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Gebruiker.Add(gebruiker);
+                _context.Gebruikers.Add(gebruiker);
                 _context.Add(gebruiker);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -71,12 +71,12 @@ namespace Mvc_Project.Controllers
         // GET: Gebruiker/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Gebruiker == null)
+            if (id == null || _context.Gebruikers == null)
             {
                 return NotFound();
             }
 
-            var gebruiker = await _context.Gebruiker.FindAsync(id);
+            var gebruiker = await _context.Gebruikers.FindAsync(id);
             if (gebruiker == null)
             {
                 return NotFound();
@@ -100,7 +100,7 @@ namespace Mvc_Project.Controllers
             {
                 try
                 {
-                    _context.Gebruiker.Update(gebruiker);
+                    _context.Gebruikers.Update(gebruiker);
                     _context.Update(gebruiker);
                     await _context.SaveChangesAsync();
                 }
@@ -123,12 +123,12 @@ namespace Mvc_Project.Controllers
         // GET: Gebruiker/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Gebruiker == null)
+            if (id == null || _context.Gebruikers == null)
             {
                 return NotFound();
             }
 
-            var gebruiker = await _context.Gebruiker
+            var gebruiker = await _context.Gebruikers
                 .FirstOrDefaultAsync(m => m.GebruikerId == id);
             if (gebruiker == null)
             {
@@ -143,14 +143,14 @@ namespace Mvc_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Gebruiker == null)
+            if (_context.Gebruikers == null)
             {
                 return Problem("Entity set 'Mvc_ProjectContext.Gebruiker'  is null.");
             }
-            var gebruiker = await _context.Gebruiker.FindAsync(id);
+            var gebruiker = await _context.Gebruikers.FindAsync(id);
             if (gebruiker != null)
             {
-                _context.Gebruiker.Remove(gebruiker);
+                _context.Gebruikers.Remove(gebruiker);
             }
             
             await _context.SaveChangesAsync();
@@ -159,7 +159,7 @@ namespace Mvc_Project.Controllers
 
         private bool GebruikerExists(int id)
         {
-          return (_context.Gebruiker?.Any(e => e.GebruikerId == id)).GetValueOrDefault();
+          return (_context.Gebruikers?.Any(e => e.GebruikerId == id)).GetValueOrDefault();
         }
     }
 }
