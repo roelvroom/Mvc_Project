@@ -51,22 +51,22 @@
                         }
                         
                     </ul>
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav">
                         @if (HttpContextAccessor.HttpContext.Session.GetString("GebruikersNaam") != null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Welkome, @HttpContextAccessor.HttpContext.Session.GetString("GebruikersNaam")</a>
+                                <a class="nav-link text-white" href="#">Welkome, @HttpContextAccessor.HttpContext.Session.GetString("GebruikersNaam")</a>
                             </li>
                             <li class="nav-item">
                                 <form asp-controller="Login" asp-action="Logout" method="post">
-                                    <button type="submit" class="btn btn-link nav-link">Logout</button>
+                                    <button type="submit" class="btn btn-link nav-link text-white">Logout</button>
                                 </form>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("Login", "Account")">Login</a>
+                                <a class="nav-link text-white" href="@Url.Action("Login", "Account")">Login</a>
                             </li>
                         }
                     </ul>
