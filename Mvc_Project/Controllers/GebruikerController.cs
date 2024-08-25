@@ -56,10 +56,11 @@ namespace Mvc_Project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GebruikerId,Naam,Voornaam,Initialen,GebruikersNaam,Wachtwoord,Email,Verwijder")] Gebruiker gebruiker)
+        public async Task<IActionResult> Create([Bind("GebruikerId,Naam,Voornaam,Initialen,GebruikersNaam,Wachtwoord,Email,Rol")] Gebruiker gebruiker)
         {
             if (ModelState.IsValid)
             {
+                _context.Gebruiker.Add(gebruiker);
                 _context.Add(gebruiker);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -88,7 +89,7 @@ namespace Mvc_Project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("GebruikerId,Naam,Voornaam,Initialen,GebruikersNaam,Wachtwoord,Email,Verwijder")] Gebruiker gebruiker)
+        public async Task<IActionResult> Edit(int id, [Bind("GebruikerId,Naam,Voornaam,Initialen,GebruikersNaam,Wachtwoord,Email,Rol")] Gebruiker gebruiker)
         {
             if (id != gebruiker.GebruikerId)
             {
@@ -99,6 +100,7 @@ namespace Mvc_Project.Controllers
             {
                 try
                 {
+                    _context.Gebruiker.Update(gebruiker);
                     _context.Update(gebruiker);
                     await _context.SaveChangesAsync();
                 }

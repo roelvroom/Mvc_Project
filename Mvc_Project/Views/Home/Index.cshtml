@@ -1,8 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@inject IHttpContextAccessor HttpContextAccessor
+
 
 <div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded text-center">
+    @if (HttpContextAccessor.HttpContext.Session.GetString("GebuikersNaam") != null)
+    {
+        <h1>Welkome, @HttpContextAccessor.HttpContext.Session.GetString("GebruikersNaam")</h1>
+    }
     <div class="row border">
         <div class="col">
             <h1>Album</h1>

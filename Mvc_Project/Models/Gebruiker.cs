@@ -4,6 +4,15 @@ namespace Mvc_Project.Models
 {
     public class Gebruiker
     {
+        public enum GebruikersRol
+        {
+            Leerkracht,
+            Boekhouder,
+            Directie,
+            Beheerder
+        }
+
+
         public int GebruikerId { get; set; }
         public string Naam { get; set; }
         public string Voornaam { get; set; }
@@ -12,5 +21,8 @@ namespace Mvc_Project.Models
         public string Wachtwoord { get; set; }
         public string Email { get; set; }
         public bool Verwijder { get; set; }
+
+
+        public string Rol { get; set; }
     }
 }
