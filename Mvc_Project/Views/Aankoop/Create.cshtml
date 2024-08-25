@@ -13,7 +13,16 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <!-- Geen invoerveld voor NaamAanvragerId hier -->
+            <div class="form-group">
+                <label class="control-label">Selecteer een gebruiker</label>
+                <select class="form-control">
+                    <option value="">Kies een gebruiker</option>
+                    @foreach (var gebruiker in (SelectList)ViewBag.Gebruikers)
+                    {
+                        <option value="@gebruiker.Value">@gebruiker.Text</option>
+                    }
+                </select>
+            </div>
 
             <div class="form-group">
                 <label asp-for="Datum" class="control-label"></label>
@@ -26,8 +35,10 @@
                 <span asp-validation-for="Reden" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VakId" class="control-label"></label>
-                <input asp-for="VakId" class="form-control" />
+                <label class="control-label">Selecteer een vak</label>
+                <select asp-for="VakId" class="form-control" asp-items="ViewBag.Vakken">
+                    <option value="">Kies een vak</option>
+                </select>
                 <span asp-validation-for="VakId" class="text-danger"></span>
             </div>
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -52,9 +54,8 @@ namespace Mvc_Project.Controllers
         // GET: Aankoop/Create
         public IActionResult Create()
         {
-            _logger.LogInformation("umoeder");
-            _logger.LogInformation($"{ViewBag.Gebruikers = new SelectList(_context.Gebruikers, "GebruikerId", "Naam")}");
             ViewBag.Gebruikers = new SelectList(_context.Gebruikers, "GebruikerId", "Naam");
+            ViewBag.Vakken = new SelectList(_context.Vakken, "VakId", "Naam");
             return View();
         }
 
@@ -162,7 +163,7 @@ namespace Mvc_Project.Controllers
         // POST: Aankoop/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, string reden)
         {
             if (_context.Aankopen == null)
             {
@@ -172,6 +173,30 @@ namespace Mvc_Project.Controllers
             if (aankoop != null)
             {
                 _context.Aankopen.Remove(aankoop);
+                await _context.SaveChangesAsync();
+
+                var gebruiker = await _context.Gebruikers.FindAsync(aankoop.NaamAanvragerId);
+                if(gebruiker != null)
+                {
+                    var mailVerzenden = new MailMessage
+                    {
+                        From = new MailAddress("r0950679@student.thomasmore.be"),
+                        Subject = $"Aankoop afgewezen",
+                        Body = $"Een aankoop met de ID {id} is verwijderd om de volgende reden: {reden}",
+                        IsBodyHtml = true
+                    };
+                    //ontvanger email
+                    mailVerzenden.To.Add(gebruiker.Email);
+
+                    using (var smtpClient = new SmtpClient("smtp.gmail.com"))
+                    {
+                        smtpClient.Credentials = new NetworkCredential("roelvroom93@gmail.com", "RO5879el!");
+                        smtpClient.EnableSsl = true;
+                        await smtpClient.SendMailAsync(mailVerzenden);
+                    }
+                }
+
+                
             }
             
             await _context.SaveChangesAsync();

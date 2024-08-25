@@ -59,44 +59,14 @@
                                     @Html.DisplayFor(modelItem => item.NaamAanvrager.Naam)
                                 </td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@item.AankoopId">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@item.AankoopId">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.AankoopId">Delete</a>
+                                    <a asp-controller="Aankoop" asp-action="Edit" asp-route-id="@item.AankoopId">Goedkeuren</a> |
+                                    <a asp-controller="Aankoop" asp-action="Delete" asp-route-id="@item.AankoopId">Afwijzen</a> |
+                                    <a asp-controller="Aankoop" asp-action="Details" asp-route-id="@item.AankoopId">Details</a> 
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-                @*<ul class="list-group">
-                    <li class="list-group-item text-start">Aankoop 1
-                        <div class="float-end">
-                            <button type="button" class="btn btn-outline-success ">Accepteren</button>
-                            <button type="button" class="btn btn-outline-danger">Afwijzen</button>
-                            <button type="button" class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("Index", "Aankoop")'">
-                                Aanpassen
-                            </button>
-
-                        </div>
-                    </li>
-                    <li class="list-group-item text-start">Aankoop 2
-                        <div class="float-end">
-                            <button type="button" class="btn btn-outline-success ">Accepteren</button>
-                            <button type="button" class="btn btn-outline-danger">Afwijzen</button>
-                            <button type="button" class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("Index", "Aankoop")'">
-                                Aanpassen
-                            </button>
-                        </div>
-                    </li>
-                    <li class="list-group-item text-start">Aankoop 3
-                        <div class="float-end">
-                            <button type="button" class="btn btn-outline-success ">Accepteren</button>
-                            <button type="button" class="btn btn-outline-danger">Afwijzen</button>
-                            <button type="button" class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("Index", "Aankoop")'">
-                                Aanpassen
-                            </button>
-                        </div>
-                    </li>
-                </ul>*@
             </div>
         </div>
     </div>
