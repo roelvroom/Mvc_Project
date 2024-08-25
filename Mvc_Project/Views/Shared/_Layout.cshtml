@@ -27,17 +27,14 @@
                             <li class="nav-item">
                                 <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
                             </li>
-                            @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Boekhouder" ||
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
                            HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie" ||
-                           HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder")
+                           HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Boekhouder")
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" asp-area="" asp-controller="Bijlagen" asp-action="Index">Archief</a>
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Aankoop" asp-action="Index">Archief</a>
                                 </li>
                             }
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Aankoop" asp-action="Index">Aankoop</a>
-                            </li>
                             @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder")
                             {
                                 <li class="nav-item">
@@ -56,8 +53,8 @@
                            HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie")
                             {
                                 <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Producten" asp-action="Index">Producten</a>
-                            </li>
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Producten" asp-action="Index">Producten</a>
+                                </li>
                             }
 
                             

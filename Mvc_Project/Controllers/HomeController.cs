@@ -23,20 +23,14 @@ namespace Mvc_Project.Controllers
         // GET: Home/Index
         public async Task<IActionResult> Index()
         {
-            var userRoles = _httpContextAccessor.HttpContext.User.Claims
-                .Where(c => c.Type == ClaimTypes.Role)
-                .Select(c => c.Value)
-                .ToList();
-
-            var isBookhouder = userRoles.Contains("Boekhouder");
+            // Haal alle aankopen op inclusief de gerelateerde gegevens zoals NaamAanvrager
+            var aankopen = await _context.Aankopen
+                .Include(a => a.NaamAanvrager)  // Laadt de NaamAanvrager
+                .ToListAsync();
 
             var gebruikerNaam = _httpContextAccessor.HttpContext.Session.GetString("GebuikersNaam");
-
-            var aankopen = isBookhouder
-                ? await _context.Aankopen.Where(a => a.GoedGekeurd).ToListAsync()
-                : await _context.Aankopen.Where(a => !a.GoedGekeurd).ToListAsync();
-
             ViewBag.GebruikerNaam = gebruikerNaam;
+
             return View(aankopen);
         }
 
@@ -55,7 +49,24 @@ namespace Mvc_Project.Controllers
             _context.Update(aankoop);
             await _context.SaveChangesAsync();
 
-            // Redirect naar de Index pagina zonder de goedgekeurde aankoop meer te tonen
+            // Redirect naar de Index pagina
+            return RedirectToAction(nameof(Index));
+        }
+
+        // POST: Home/Afwijzen/5
+        [HttpPost]
+        public async Task<IActionResult> Afwijzen(int id)
+        {
+            var aankoop = await _context.Aankopen.FindAsync(id);
+            if (aankoop == null)
+            {
+                return NotFound();
+            }
+
+            _context.Aankopen.Remove(aankoop);
+            await _context.SaveChangesAsync();
+
+            // Redirect naar de Index pagina
             return RedirectToAction(nameof(Index));
         }
 

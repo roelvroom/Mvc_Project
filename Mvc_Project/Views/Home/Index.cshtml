@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<Mvc_Project.Models.Aankoop>
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Dashboard";
 }
+
 
 <div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded text-center">
     <h1>Welkom, @ViewBag.GebruikerNaam</h1>
@@ -14,47 +16,133 @@
                 <a class="btn btn-primary btn-lg" href="@Url.Action("Create", "Aankoop")" role="button">Aankoop aanvragen</a>
             </div>
         </div>
+
         <div class="col">
             <h1>Aangevraagde aankopen</h1>
             <div class="container pt-3">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.First().NaamAanvrager.Voornaam)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.First().NaamAanvrager.Naam)
-                            </th>
-                            <th>
-                                Acties
-                            </th>
+                            <th>@Html.DisplayNameFor(model => model.First().NaamAanvrager.Voornaam)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().NaamAanvrager.Naam)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Datum)</th>
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
+                            HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie")
+                            {
+                                <th>Acties</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        
+                        @if (Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+
+                                @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Boekhouder" && item.GoedGekeurd){
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.NaamAanvrager.Voornaam)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NaamAanvrager.Naam)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Datum)</td>
+                                        <td>
+                                            <form asp-action="Afwijzen" asp-route-id="@item.AankoopId" method="post" style="display:inline;">
+                                                <input type="submit" value="Afwijzen" class="btn btn-danger" />
+                                            </form>
+                                            <a asp-controller="Aankoop" asp-action="Details" asp-route-id="@item.AankoopId" class="btn btn-info">Details</a>
+                                        </td>
+                                    </tr>
+                                }
+                                else if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie" || 
+                                HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" )
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.NaamAanvrager.Voornaam)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NaamAanvrager.Naam)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Datum)</td>
+                                       
+                                        <td>
+                                            @if (!item.GoedGekeurd)
+                                            {
+                                                <form asp-action="Goedkeuren" asp-route-id="@item.AankoopId" method="post" style="display:inline;">
+                                                    <input type="submit" value="Goedkeuren" class="btn btn-success" />
+                                                </form>
+                                            }
+                                            <form asp-action="Afwijzen" asp-route-id="@item.AankoopId" method="post" style="display:inline;">
+                                                <input type="submit" value="Afwijzen" class="btn btn-danger" />
+                                            </form>
+                                            <a asp-controller="Aankoop" asp-action="Details" asp-route-id="@item.AankoopId" class="btn btn-info">Details</a>
+                                        </td>
+                                        
+                                    </tr>
+                                }
+                                
+                            }
+                        }
+                        else
                         {
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NaamAanvrager.Voornaam)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NaamAanvrager.Naam)
-                                </td>
-                                <td>
-                                    @if (!item.GoedGekeurd)
-                                    {
-                                        <form asp-action="Goedkeuren" asp-route-id="@item.AankoopId" method="post">
-                                            <input type="submit" value="Goedkeuren" class="btn btn-success" />
-                                        </form>
-                                    }
-                                    <a asp-controller="Aankoop" asp-action="Delete" asp-route-id="@item.AankoopId" class="btn btn-danger">Afwijzen</a> |
-                                    <a asp-controller="Aankoop" asp-action="Details" asp-route-id="@item.AankoopId" class="btn btn-info">Details</a>
-                                </td>
+                                <td colspan="4">Geen aankopen gevonden.</td>
                             </tr>
                         }
                     </tbody>
                 </table>
+
+
+               @* @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Boekhouder" && )
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.First().NaamAanvrager.Voornaam)</th>
+                                <th>@Html.DisplayNameFor(model => model.First().NaamAanvrager.Naam)</th>
+                                <th>@Html.DisplayNameFor(model => model.First().Datum)</th>
+                                @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
+                               HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie")
+                                {
+                                    <th>Acties</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (Model.Any())
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.NaamAanvrager.Voornaam)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NaamAanvrager.Naam)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Datum)</td>
+                                        @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
+                                       HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie")
+                                        {
+                                            <td>
+                                                @if (!item.GoedGekeurd)
+                                                {
+                                                    <form asp-action="Goedkeuren" asp-route-id="@item.AankoopId" method="post" style="display:inline;">
+                                                        <input type="submit" value="Goedkeuren" class="btn btn-success" />
+                                                    </form>
+                                                }
+                                                <form asp-action="Afwijzen" asp-route-id="@item.AankoopId" method="post" style="display:inline;">
+                                                    <input type="submit" value="Afwijzen" class="btn btn-danger" />
+                                                </form>
+                                                <a asp-controller="Aankoop" asp-action="Details" asp-route-id="@item.AankoopId" class="btn btn-info">Details</a>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4">Geen aankopen gevonden.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }*@
+
             </div>
         </div>
     </div>

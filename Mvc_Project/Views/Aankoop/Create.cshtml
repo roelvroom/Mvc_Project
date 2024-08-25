@@ -1,8 +1,10 @@
 ﻿@model Mvc_Project.Models.Aankoop
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
     ViewData["Title"] = "Create";
 }
+
 
 <h1>Create</h1>
 
@@ -60,9 +62,15 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
+    HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie" ||
+   HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Boekhouder")
+{
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+}
+
 
 @section Scripts {
     @{
