@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Mvc_Project.styles.css" asp-append-version="true" />
 </head>
+@inject IHttpContextAccessor HttpContextAccessor
+
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary border-bottom box-shadow mb-3">
@@ -22,18 +25,50 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Bijlagen" asp-action="Index">Archief</a>
-                        </li>
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Boekhouder" ||
+                        HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie" || 
+                        HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Bijlagen" asp-action="Index">Archief</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Aankoop" asp-action="Index">Aankoop</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Gebruiker" asp-action="Index">Gebruikers</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Vakken" asp-action="Index">Vakken</a>
-                        </li>
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Gebruiker" asp-action="Index">Gebruikers</a>
+                            </li>
+                        }
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
+                        HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Vakken" asp-action="Index">Vakken</a>
+                            </li>
+                        }
+                        
+                    </ul>
+                    <ul class="navbar-nav flex-grow-1">
+                        @if (HttpContextAccessor.HttpContext.Session.GetString("GebruikersNaam") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Welkome, @HttpContextAccessor.HttpContext.Session.GetString("GebruikersNaam")</a>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Login" asp-action="Logout" method="post">
+                                    <button type="submit" class="btn btn-link nav-link">Logout</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Login", "Account")">Login</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
