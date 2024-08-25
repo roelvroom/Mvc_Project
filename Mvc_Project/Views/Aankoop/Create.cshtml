@@ -1,23 +1,32 @@
 ﻿@model Mvc_Project.Models.Aankoop
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Aanmaken</h1>
 
 <h4>Aankoop</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="NaamAanvragerId" class="control-label"></label>
-                <input asp-for="NaamAanvragerId" class="form-control" />
-                <span asp-validation-for="NaamAanvragerId" class="text-danger"></span>
+                <label class="control-label">Selecteer een gebruiker</label>
+                <select asp-for="NaamAanvragerId" class="form-control">
+                    <option value="">Kies een gebruiker</option>
+                    @foreach (var gebruiker in (SelectList)ViewBag.Gebruikers)
+                    {
+                        <option value="@gebruiker.Value">@gebruiker.Text</option>
+                    }
+                </select>
             </div>
+
             <div class="form-group">
                 <label asp-for="Datum" class="control-label"></label>
                 <input asp-for="Datum" class="form-control" />
@@ -29,23 +38,30 @@
                 <span asp-validation-for="Reden" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VakId" class="control-label"></label>
-                <input asp-for="VakId" class="form-control" />
+                <label class="control-label">Selecteer een vak</label>
+                <select asp-for="VakId" class="form-control" asp-items="ViewBag.Vakken">
+                    <option value="">Kies een vak</option>
+                </select>
                 <span asp-validation-for="VakId" class="text-danger"></span>
             </div>
-            
-            
-            
-            @*<div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="GoedGekeurd" /> @Html.DisplayNameFor(model => model.GoedGekeurd)
-                </label>
+
+            <div class="form-group">
+                <label asp-for="ProductId" class="control-label">Selecteer een product</label>
+                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.Producten">
+                    <option value="">Kies een product</option>
+                </select>
+                <span asp-validation-for="ProductId" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Verwijderd" /> @Html.DisplayNameFor(model => model.Verwijderd)
-                </label>
-            </div>*@
+            <div>
+                <a asp-controller="Producten" asp-action="Create">Maak een nieuw product aan</a>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Bijlagen</label>
+                <input type="file" name="bijlagen" multiple class="form-control" />
+                <span asp-validation-for="bijlagen" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -53,10 +69,17 @@
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
+   HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie" ||
+   HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Boekhouder")
+{
+    <div>
+        <a asp-action="Index">Terug naar lijst</a>
+    </div>
+}
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

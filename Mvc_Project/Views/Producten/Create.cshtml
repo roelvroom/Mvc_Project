@@ -1,4 +1,4 @@
-﻿@model Mvc_Project.Models.Bijlagen
+﻿@model Mvc_Project.Models.Product
 
 @{
     ViewData["Title"] = "Create";
@@ -6,21 +6,26 @@
 
 <h1>Aanmaken</h1>
 
-<h4>Bijlagen</h4>
+<h4>Product</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="AankoopId" class="control-label"></label>
-                <input asp-for="AankoopId" class="form-control" />
-                <span asp-validation-for="AankoopId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Naam" class="control-label"></label>
                 <input asp-for="Naam" class="form-control" />
                 <span asp-validation-for="Naam" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Prijs" class="control-label"></label>
+                <input asp-for="Prijs" class="form-control" />
+                <span asp-validation-for="Prijs" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hoevelheid" class="control-label"></label>
+                <input asp-for="Hoevelheid" class="form-control" />
+                <span asp-validation-for="Hoevelheid" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

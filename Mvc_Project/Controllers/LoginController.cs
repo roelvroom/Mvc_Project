@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http; 
 using Mvc_Project.Data;
+using Mvc_Project.Models; 
 
 namespace Mvc_Project.Controllers
 {
@@ -21,17 +23,19 @@ namespace Mvc_Project.Controllers
         [HttpPost]
         public IActionResult Index(string gebruikersNaam, string wachtWoord)
         {
-            var gebruiker = _context.Gebruiker.FirstOrDefault(u => u.GebruikersNaam == gebruikersNaam && u.Wachtwoord == wachtWoord);
+            var gebruiker = _context.Gebruikers
+                .FirstOrDefault(u => u.GebruikersNaam == gebruikersNaam && u.Wachtwoord == wachtWoord);
 
-            if(gebruiker != null)
+            if (gebruiker != null)
             {
+                HttpContext.Session.SetString("GebruikerId", gebruiker.GebruikerId.ToString());
                 HttpContext.Session.SetString("GebruikersNaam", gebruiker.GebruikersNaam);
                 HttpContext.Session.SetString("Rol", gebruiker.Rol);
+
                 return RedirectToAction("Index", "Home");
             }
 
-            
-
+            ModelState.AddModelError("", "Ongeldige gebruikersnaam of wachtwoord.");
             return View();
         }
 

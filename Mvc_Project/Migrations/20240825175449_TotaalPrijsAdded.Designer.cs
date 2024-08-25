@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mvc_Project.Data;
 
@@ -11,9 +12,10 @@ using Mvc_Project.Data;
 namespace Mvc_Project.Migrations
 {
     [DbContext(typeof(Mvc_ProjectContext))]
-    partial class Mvc_ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20240825175449_TotaalPrijsAdded")]
+    partial class TotaalPrijsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,9 +37,6 @@ namespace Mvc_Project.Migrations
 
                     b.Property<bool>("GoedGekeurd")
                         .HasColumnType("bit");
-
-                    b.Property<int>("IDProduct")
-                        .HasColumnType("int");
 
                     b.Property<int>("NaamAanvragerId")
                         .HasColumnType("int");

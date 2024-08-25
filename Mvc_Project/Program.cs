@@ -4,11 +4,14 @@ using Mvc_Project.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 builder.Services.AddDbContext<Mvc_ProjectContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Mvc_ProjectContext") ?? throw new InvalidOperationException("Connection string 'Mvc_ProjectContext' not found.")));
 
-
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30); 

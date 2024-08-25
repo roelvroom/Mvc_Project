@@ -1,76 +1,148 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<Mvc_Project.Models.Aankoop>
 @inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
 
 
 <div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded text-center">
-    @if (HttpContextAccessor.HttpContext.Session.GetString("GebuikersNaam") != null)
-    {
-        <h1>Welkome, @HttpContextAccessor.HttpContext.Session.GetString("GebruikersNaam")</h1>
-    }
-    <div class="row border">
-        <div class="col">
-            <h1>Album</h1>
-            <div class="container shadow-sm p-3 mb-5 bg-body-tertiary rounded text-start">
-                <div class="row">
-                    <div class="col">
-                        <h2>Col 1</h2>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <h2>Col 2</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <div class="row border p-2">
         <div class="col">
             <h1>Aankoop aanvragen</h1>
             <div class="container pt-3">
-                <a class="btn btn-primary btn-lg" href="#" role="button" onclick="window.location.href='@Url.Action("Create", "Aankoop")'">Aankoop aanvragen</a>
+                <a class="btn btn-primary btn-lg" href="@Url.Action("Create", "Aankoop")" role="button">Aankoop aanvragen</a>
             </div>
         </div>
+
         <div class="col">
             <h1>Aangevraagde aankopen</h1>
             <div class="container pt-3">
-                <ul class="list-group">
-                    <li class="list-group-item text-start">Aankoop 1
-                        <div class="float-end">
-                            <button type="button" class="btn btn-outline-success ">Accepteren</button>
-                            <button type="button" class="btn btn-outline-danger">Afwijzen</button>
-                            @*index moet veranderd worden door de id van de geselecteerde aankoop*@
-                            <button type="button" class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("Index", "Aankoop")'">
-                                Aanpassen
-                            </button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.First().NaamAanvrager.Voornaam)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().NaamAanvrager.Naam)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Datum)</th>
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
+                            HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie")
+                            {
+                                <th>Acties</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        @if (Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
 
-                        </div>
-                    </li>
-                    <li class="list-group-item text-start">Aankoop 2
-                        <div class="float-end">
-                            <button type="button" class="btn btn-outline-success ">Accepteren</button>
-                            <button type="button" class="btn btn-outline-danger">Afwijzen</button>
-                            @*index moet veranderd worden door de id van de geselecteerde aankoop*@
-                            <button type="button" class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("Index", "Aankoop")'">
-                                Aanpassen
-                            </button>
-                        </div>
-                    </li>
-                    <li class="list-group-item text-start">Aankoop 3
-                        <div class="float-end">
-                            <button type="button" class="btn btn-outline-success ">Accepteren</button>
-                            <button type="button" class="btn btn-outline-danger">Afwijzen</button>
-                            @*index moet veranderd worden door de id van de geselecteerde aankoop*@
-                            <button type="button" class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("Index", "Aankoop")'">
-                                Aanpassen
-                            </button>
-                        </div>
-                    </li>
-                </ul>
+                                @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Boekhouder" && item.GoedGekeurd){
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.NaamAanvrager.Voornaam)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NaamAanvrager.Naam)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Datum)</td>
+                                        <td>
+                                            <form asp-action="Afwijzen" asp-route-id="@item.AankoopId" method="post" style="display:inline;">
+                                                <input type="submit" value="Afwijzen" class="btn btn-danger" />
+                                            </form>
+                                            <a asp-controller="Aankoop" asp-action="Details" asp-route-id="@item.AankoopId" class="btn btn-info">Details</a>
+                                        </td>
+                                    </tr>
+                                }
+                                else if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie" || 
+                                HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" )
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.NaamAanvrager.Voornaam)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NaamAanvrager.Naam)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Datum)</td>
+                                       
+                                        <td>
+                                            @if (!item.GoedGekeurd)
+                                            {
+                                                <form asp-action="Goedkeuren" asp-route-id="@item.AankoopId" method="post" style="display:inline;">
+                                                    <input type="submit" value="Goedkeuren" class="btn btn-success" />
+                                                </form>
+                                            }
+                                            <form asp-action="Afwijzen" asp-route-id="@item.AankoopId" method="post" style="display:inline;">
+                                                <input type="submit" value="Afwijzen" class="btn btn-danger" />
+                                            </form>
+                                            <a asp-controller="Aankoop" asp-action="Details" asp-route-id="@item.AankoopId" class="btn btn-info">Details</a>
+                                        </td>
+                                        
+                                    </tr>
+                                }
+                                
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4">Geen aankopen gevonden.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+               @* @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Boekhouder" && )
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.First().NaamAanvrager.Voornaam)</th>
+                                <th>@Html.DisplayNameFor(model => model.First().NaamAanvrager.Naam)</th>
+                                <th>@Html.DisplayNameFor(model => model.First().Datum)</th>
+                                @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
+                               HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie")
+                                {
+                                    <th>Acties</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (Model.Any())
+                            {
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.NaamAanvrager.Voornaam)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.NaamAanvrager.Naam)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Datum)</td>
+                                        @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
+                                       HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie")
+                                        {
+                                            <td>
+                                                @if (!item.GoedGekeurd)
+                                                {
+                                                    <form asp-action="Goedkeuren" asp-route-id="@item.AankoopId" method="post" style="display:inline;">
+                                                        <input type="submit" value="Goedkeuren" class="btn btn-success" />
+                                                    </form>
+                                                }
+                                                <form asp-action="Afwijzen" asp-route-id="@item.AankoopId" method="post" style="display:inline;">
+                                                    <input type="submit" value="Afwijzen" class="btn btn-danger" />
+                                                </form>
+                                                <a asp-controller="Aankoop" asp-action="Details" asp-route-id="@item.AankoopId" class="btn btn-info">Details</a>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4">Geen aankopen gevonden.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }*@
+
             </div>
         </div>
     </div>
 </div>
-
