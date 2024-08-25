@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mvc_Project.Data;
 
@@ -11,9 +12,10 @@ using Mvc_Project.Data;
 namespace Mvc_Project.Migrations
 {
     [DbContext(typeof(Mvc_ProjectContext))]
-    partial class Mvc_ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20240825175113_columNameChange")]
+    partial class columNameChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,11 +38,11 @@ namespace Mvc_Project.Migrations
                     b.Property<bool>("GoedGekeurd")
                         .HasColumnType("bit");
 
-                    b.Property<int>("IDProduct")
-                        .HasColumnType("int");
-
                     b.Property<int>("NaamAanvragerId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("PrijsAlleProducten")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -48,9 +50,6 @@ namespace Mvc_Project.Migrations
                     b.Property<string>("Reden")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotaalPrijs")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("VakId")
                         .HasColumnType("int");

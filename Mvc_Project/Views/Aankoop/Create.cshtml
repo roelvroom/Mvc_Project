@@ -43,6 +43,17 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="ProductId" class="control-label">Selecteer een product</label>
+                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.Producten">
+                    <option value="">Kies een product</option>
+                </select>
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+            <div>
+                <a asp-controller="Producten" asp-action="Create">Maak een nieuw product aan</a>
+            </div>
+
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

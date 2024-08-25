@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -27,13 +28,48 @@ namespace Mvc_Project.Controllers
         // GET: Aankoop
         public async Task<IActionResult> Index()
         {
-            _logger.LogInformation("umoeder");
-              return _context.Aankopen != null ? 
-                          View(await _context.Aankopen.ToListAsync()) :
-                          Problem("Entity set 'Mvc_ProjectContext.Aankoop'  is null.");
+            // Verkrijg de rol van de huidige gebruiker
+            var userRoles = User.Claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value)
+                .ToList();
+
+            var isDirectie = userRoles.Contains("Directie");
+
+            var aankopen = isDirectie
+                ? await _context.Aankopen.Where(a => !a.GoedGekeurd).ToListAsync()
+                : await _context.Aankopen.ToListAsync();
+
+            return View(aankopen);
         }
 
-        // GET: Aankoop/Details/5
+        /*[HttpPost]
+        public async Task<IActionResult> Afwijzen(int id)
+        {
+            var aankoop = await _context.Aankopen.FindAsync(id);
+            if (aankoop != null)
+            {
+                _context.Aankopen.Remove(aankoop);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Goedkeuren(int id)
+        {
+            var aankoop = await _context.Aankopen.FindAsync(id);
+            if (aankoop != null)
+            {
+                aankoop.GoedGekeurd = true;
+                _context.Update(aankoop);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }*/
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Aankopen == null)
@@ -56,6 +92,15 @@ namespace Mvc_Project.Controllers
         {
             ViewBag.Gebruikers = new SelectList(_context.Gebruikers, "GebruikerId", "Naam");
             ViewBag.Vakken = new SelectList(_context.Vakken, "VakId", "Naam");
+            var producten = _context.Producten
+                .Select(p => new
+                {
+                    p.ProductId,
+                    DisplayValue = p.Naam + " - €" + p.Prijs + " - " + p.Hoevelheid
+                })
+                .ToList();
+
+            ViewBag.Producten = new SelectList(producten, "ProductId", "DisplayValue");
             return View();
         }
 
@@ -65,6 +110,10 @@ namespace Mvc_Project.Controllers
         {
             // Haal de ingelogde gebruiker ID uit de sessie
             var gebruikerIdString = HttpContext.Session.GetString("GebruikerId");
+
+            var geselecteerdProduct = await _context.Producten
+               .Where(p => p.ProductId == aankoop.ProductId)
+               .FirstOrDefaultAsync();
 
             if (string.IsNullOrEmpty(gebruikerIdString))
             {
@@ -87,6 +136,18 @@ namespace Mvc_Project.Controllers
             }
 
             ViewBag.Gebruikers = new SelectList(await _context.Gebruikers.ToListAsync(), "GebruikerId", "Naam");
+            ViewBag.Vakken = new SelectList(await _context.Vakken.ToListAsync(), "VakId", "Naam");
+            var producten = _context.Producten
+                .Select(p => new
+                {
+                    p.ProductId,
+                    DisplayValue = p.Naam + " - €" + p.Prijs + " - " + p.Hoevelheid
+                })
+                .ToList();
+
+
+            ViewBag.Gebruikers = new SelectList(await _context.Gebruikers.ToListAsync(), "GebruikerId", "Naam");
+            ViewBag.Producten = new SelectList(producten, "ProductId", "DisplayValue");
             return View(aankoop);
         }
 
