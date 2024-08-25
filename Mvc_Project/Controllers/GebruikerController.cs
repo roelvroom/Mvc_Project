@@ -19,7 +19,6 @@ namespace Mvc_Project.Controllers
             _context = context;
         }
 
-        // GET: Gebruiker
         public async Task<IActionResult> Index()
         {
               return _context.Gebruikers != null ? 
@@ -27,7 +26,6 @@ namespace Mvc_Project.Controllers
                           Problem("Entity set 'Mvc_ProjectContext.Gebruiker'  is null.");
         }
 
-        // GET: Gebruiker/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Gebruikers == null)
@@ -45,15 +43,11 @@ namespace Mvc_Project.Controllers
             return View(gebruiker);
         }
 
-        // GET: Gebruiker/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Gebruiker/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("GebruikerId,Naam,Voornaam,Initialen,GebruikersNaam,Wachtwoord,Email,Rol")] Gebruiker gebruiker)
@@ -68,7 +62,6 @@ namespace Mvc_Project.Controllers
             return View(gebruiker);
         }
 
-        // GET: Gebruiker/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Gebruikers == null)
@@ -84,9 +77,6 @@ namespace Mvc_Project.Controllers
             return View(gebruiker);
         }
 
-        // POST: Gebruiker/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("GebruikerId,Naam,Voornaam,Initialen,GebruikersNaam,Wachtwoord,Email,Rol")] Gebruiker gebruiker)
@@ -120,7 +110,6 @@ namespace Mvc_Project.Controllers
             return View(gebruiker);
         }
 
-        // GET: Gebruiker/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Gebruikers == null)
@@ -138,7 +127,6 @@ namespace Mvc_Project.Controllers
             return View(gebruiker);
         }
 
-        // POST: Gebruiker/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

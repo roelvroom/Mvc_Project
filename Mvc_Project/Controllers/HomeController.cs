@@ -20,12 +20,10 @@ namespace Mvc_Project.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        // GET: Home/Index
         public async Task<IActionResult> Index()
         {
-            // Haal alle aankopen op inclusief de gerelateerde gegevens zoals NaamAanvrager
             var aankopen = await _context.Aankopen
-                .Include(a => a.NaamAanvrager)  // Laadt de NaamAanvrager
+                .Include(a => a.NaamAanvrager)  
                 .ToListAsync();
 
             var gebruikerNaam = _httpContextAccessor.HttpContext.Session.GetString("GebuikersNaam");
@@ -34,7 +32,6 @@ namespace Mvc_Project.Controllers
             return View(aankopen);
         }
 
-        // POST: Home/Goedkeuren/5
         [HttpPost]
         public async Task<IActionResult> Goedkeuren(int id)
         {
@@ -44,16 +41,13 @@ namespace Mvc_Project.Controllers
                 return NotFound();
             }
 
-            // Zet de goedkeuring status op true
             aankoop.GoedGekeurd = true;
             _context.Update(aankoop);
             await _context.SaveChangesAsync();
 
-            // Redirect naar de Index pagina
             return RedirectToAction(nameof(Index));
         }
 
-        // POST: Home/Afwijzen/5
         [HttpPost]
         public async Task<IActionResult> Afwijzen(int id)
         {
@@ -66,7 +60,6 @@ namespace Mvc_Project.Controllers
             _context.Aankopen.Remove(aankoop);
             await _context.SaveChangesAsync();
 
-            // Redirect naar de Index pagina
             return RedirectToAction(nameof(Index));
         }
 

@@ -19,7 +19,6 @@ namespace Mvc_Project.Controllers
             _context = context;
         }
 
-        // GET: Vakken
         public async Task<IActionResult> Index()
         {
               return _context.Vakken != null ? 
@@ -27,7 +26,6 @@ namespace Mvc_Project.Controllers
                           Problem("Entity set 'Mvc_ProjectContext.Vak'  is null.");
         }
 
-        // GET: Vakken/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Vakken == null)
@@ -45,15 +43,11 @@ namespace Mvc_Project.Controllers
             return View(vak);
         }
 
-        // GET: Vakken/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Vakken/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("VakId,Naam,Verwijderd")] Vak vak)
@@ -67,7 +61,6 @@ namespace Mvc_Project.Controllers
             return View(vak);
         }
 
-        // GET: Vakken/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Vakken == null)
@@ -83,9 +76,6 @@ namespace Mvc_Project.Controllers
             return View(vak);
         }
 
-        // POST: Vakken/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("VakId,Naam,Verwijderd")] Vak vak)
@@ -118,7 +108,6 @@ namespace Mvc_Project.Controllers
             return View(vak);
         }
 
-        // GET: Vakken/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Vakken == null)
@@ -136,7 +125,6 @@ namespace Mvc_Project.Controllers
             return View(vak);
         }
 
-        // POST: Vakken/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -19,7 +19,6 @@ namespace Mvc_Project.Controllers
             _context = context;
         }
 
-        // GET: Producten
         public async Task<IActionResult> Index()
         {
               return _context.Producten != null ? 
@@ -27,7 +26,6 @@ namespace Mvc_Project.Controllers
                           Problem("Entity set 'Mvc_ProjectContext.Product'  is null.");
         }
 
-        // GET: Producten/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Producten == null)
@@ -45,15 +43,11 @@ namespace Mvc_Project.Controllers
             return View(product);
         }
 
-        // GET: Producten/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Producten/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProductId,AankoopId,Naam,Prijs,Hoevelheid")] Product product)
@@ -67,7 +61,6 @@ namespace Mvc_Project.Controllers
             return View(product);
         }
 
-        // GET: Producten/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Producten == null)
@@ -83,9 +76,6 @@ namespace Mvc_Project.Controllers
             return View(product);
         }
 
-        // POST: Producten/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProductId,AankoopId,Naam,Prijs,Hoevelheid")] Product product)
@@ -118,7 +108,6 @@ namespace Mvc_Project.Controllers
             return View(product);
         }
 
-        // GET: Producten/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Producten == null)
@@ -136,7 +125,6 @@ namespace Mvc_Project.Controllers
             return View(product);
         }
 
-        // POST: Producten/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

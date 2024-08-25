@@ -13,5 +13,7 @@
 
         public Gebruiker NaamAanvrager { get; set; } = default!;
         public Product Product { get; set; } = default!;
+
+        public ICollection<Bijlagen> bijlagen { get; set; }
     }
 }

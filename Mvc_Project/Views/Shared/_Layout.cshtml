@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Mvc_Project.styles.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Moderustic:wght@300..800&display=swap" rel="stylesheet">
 </head>
 @inject IHttpContextAccessor HttpContextAccessor
 
@@ -24,9 +27,16 @@
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
-                            </li>
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
+                           HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie" ||
+                           HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Boekhouder" ||
+                           HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Leerkrach")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
+                                </li>
+                            }
+                            
                             @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
                            HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie" ||
                            HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Boekhouder")

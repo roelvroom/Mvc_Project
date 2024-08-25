@@ -1,23 +1,24 @@
 ﻿@model Mvc_Project.Models.Aankoop
+@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
+
 
 @{
     ViewData["Title"] = "Create";
 }
 
-
-<h1>Create</h1>
+<h1>Aanmaken</h1>
 
 <h4>Aankoop</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
                 <label class="control-label">Selecteer een gebruiker</label>
-                <select class="form-control">
+                <select asp-for="NaamAanvragerId" class="form-control">
                     <option value="">Kies een gebruiker</option>
                     @foreach (var gebruiker in (SelectList)ViewBag.Gebruikers)
                     {
@@ -56,6 +57,12 @@
             </div>
 
             <div class="form-group">
+                <label class="control-label">Bijlagen</label>
+                <input type="file" name="bijlagen" multiple class="form-control" />
+                <span asp-validation-for="bijlagen" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -63,14 +70,13 @@
 </div>
 
 @if (HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Beheerder" ||
-    HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie" ||
+   HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Directie" ||
    HttpContextAccessor.HttpContext.Session.GetString("Rol") == "Boekhouder")
 {
     <div>
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">Terug naar lijst</a>
     </div>
 }
-
 
 @section Scripts {
     @{

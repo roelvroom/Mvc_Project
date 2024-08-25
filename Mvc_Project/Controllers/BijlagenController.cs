@@ -19,7 +19,6 @@ namespace Mvc_Project.Controllers
             _context = context;
         }
 
-        // GET: Bijlagen
         public async Task<IActionResult> Index()
         {
               return _context.Bijlagen != null ? 
@@ -27,7 +26,6 @@ namespace Mvc_Project.Controllers
                           Problem("Entity set 'Mvc_ProjectContext.Bijlagen'  is null.");
         }
 
-        // GET: Bijlagen/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Bijlagen == null)
@@ -45,15 +43,11 @@ namespace Mvc_Project.Controllers
             return View(bijlagen);
         }
 
-        // GET: Bijlagen/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Bijlagen/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BijlagenId,AankoopId,Naam")] Bijlagen bijlagen)
@@ -67,7 +61,6 @@ namespace Mvc_Project.Controllers
             return View(bijlagen);
         }
 
-        // GET: Bijlagen/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Bijlagen == null)
@@ -83,9 +76,6 @@ namespace Mvc_Project.Controllers
             return View(bijlagen);
         }
 
-        // POST: Bijlagen/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("BijlagenId,AankoopId,Naam")] Bijlagen bijlagen)
@@ -118,7 +108,6 @@ namespace Mvc_Project.Controllers
             return View(bijlagen);
         }
 
-        // GET: Bijlagen/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Bijlagen == null)
@@ -136,7 +125,6 @@ namespace Mvc_Project.Controllers
             return View(bijlagen);
         }
 
-        // POST: Bijlagen/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
